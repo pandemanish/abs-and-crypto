@@ -1,11 +1,8 @@
 package com.abstrucelogic.crypto.async;
 
-import javax.crypto.Cipher;
-
 import com.abstrucelogic.crypto.CryptoHandler;
 import com.abstrucelogic.crypto.CryptoScheduler;
 import com.abstrucelogic.crypto.conf.CryptoConf;
-import com.abstrucelogic.crypto.constants.CryptoOperation;
 import com.abstrucelogic.crypto.constants.CryptoProcessStatus;
 
 public class CryptoAsyncHandler implements CryptoHandler {
@@ -38,34 +35,9 @@ public class CryptoAsyncHandler implements CryptoHandler {
 
 
 	public void exec() {
-		CryptoOperation opp = this.mCurCryptoConf.getOperation();
-		switch(opp) {
-		case ENCRYPTION:
-			this.encrypt(this.mCurCryptoConf.getInputFilePath(), this.mCurCryptoConf.getOutputFilePath(), this.mCurCryptoConf.getCipher());
-			break;
-		case DECRYPTION:
-			this.decrypt(this.mCurCryptoConf.getInputFilePath(), this.mCurCryptoConf.getOutputFilePath(), this.mCurCryptoConf.getCipher());
-			break;
-		}
+		new CryptoAsyncTask( this , mCurCryptoConf ).execute((Void)null);
 	}
 
-	public void encrypt(final String inputFilePath, final String outputFilePath, final Cipher cipher) {
-		new CryptoAsyncTask(this){
-			protected void methodCall() {
-				getmEncProcessor().encryptFile(inputFilePath, outputFilePath, cipher);
-			};
-		}.execute((Void)null);
-
-	}
-
-	public void decrypt(final String inputFilePath, final String outputFilePath, final Cipher cipher) {
-		new CryptoAsyncTask(this){
-			protected void methodCall() {
-				getmDecProcessor().decryptFile(inputFilePath, outputFilePath, cipher);
-			};
-		}.execute((Void)null);
-
-	}
 
 
 }
