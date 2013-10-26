@@ -2,6 +2,8 @@ package com.abstrucelogic.crypto;
 
 import java.util.HashMap;
 
+import android.content.Context;
+
 import com.abstrucelogic.crypto.async.CryptoAsyncHandler;
 import com.abstrucelogic.crypto.conf.CryptoConf;
 import com.abstrucelogic.crypto.constants.CryptoProcessMode;
@@ -25,10 +27,10 @@ public class CryptoScheduler {
 		return CryptoScheduler.instance;
 	}
 	
-	public void scheduleNewTask(CryptoConf conf) {
+	public void scheduleNewTask(CryptoConf conf, Context context) {
 		//check if task being performed on same file path. If yes, abort else proceed
 		if(this.mScheduledTasks.get(conf.getInputFilePath()) == null) {
-			CryptoHandler handler = this.getCryptoHandlerForConf(conf);
+			CryptoHandler handler = this.getCryptoHandlerForConf(conf, context);
 			mScheduledTasks.put(conf.getInputFilePath(), handler);
 			//add logic here to schedule a fixed number of tasks etc
 			handler.exec();
@@ -47,7 +49,7 @@ public class CryptoScheduler {
 		}
 	}
 	
-	private CryptoHandler getCryptoHandlerForConf(CryptoConf conf) {
+	private CryptoHandler getCryptoHandlerForConf(CryptoConf conf, Context context) {
 		CryptoHandler handler = null;
 		CryptoProcessMode cryptoProcessMode = conf.getProcessMode();
 		switch(cryptoProcessMode) {
@@ -55,7 +57,7 @@ public class CryptoScheduler {
 				handler = new CryptoAsyncHandler(conf);
 				break;
 			case SERVICE : 
-				handler = new CryptoServiceHandler(conf);
+				handler = new CryptoServiceHandler(conf, context);
 				break;
 			case SYNC :
 				handler = new CryptoSyncHandler(conf);

@@ -1,5 +1,7 @@
 package com.abstrucelogic.crypto;
 
+import android.content.Context;
+
 import com.abstrucelogic.crypto.conf.CryptoConf;
 
 public class CryptoManager {
@@ -17,8 +19,8 @@ public class CryptoManager {
 		return CryptoManager.instance;
 	}
 
-	public void process(CryptoConf conf) {
-		CryptoScheduler.getInstance().scheduleNewTask(conf);
+	public void process(CryptoConf conf, Context context) {
+		CryptoScheduler.getInstance().scheduleNewTask(conf, context);
 	}
 	
 }

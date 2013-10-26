@@ -54,14 +54,20 @@ public class EncryptionProcessor {
 					cipherOutStream.write(buff, 0, numOfBytesRead);
 					cipherOutStream.flush();
 					totalBytesRead = totalBytesRead + numOfBytesRead;
-					mProcessListener.processStatusUpdate(CryptoProcessStatus.INPROGRESS, (totalBytesRead/bytesAvailable) * 100);
+					if(mProcessListener != null) {
+						mProcessListener.processStatusUpdate(CryptoProcessStatus.INPROGRESS, (totalBytesRead/bytesAvailable) * 100);
+					}
 				} else {
-					mProcessListener.processStatusUpdate(CryptoProcessStatus.COMPLETE, 100);
+					if(mProcessListener != null) {
+						mProcessListener.processStatusUpdate(CryptoProcessStatus.COMPLETE, 100);
+					}
 					break;
 				}
 			}
 		} catch(Exception ex) {
-			mProcessListener.processStatusUpdate(CryptoProcessStatus.ERROR, 0);
+			if(mProcessListener != null) {
+				mProcessListener.processStatusUpdate(CryptoProcessStatus.ERROR, 0);
+			}
 			ex.printStackTrace();
 		} finally {
 			try {
