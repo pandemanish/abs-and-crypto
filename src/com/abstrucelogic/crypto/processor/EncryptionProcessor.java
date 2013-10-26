@@ -11,9 +11,9 @@ import javax.crypto.CipherOutputStream;
 
 public class EncryptionProcessor {
 
-	private static String key = "hoplesskey123456";
+	private String key = "hoplesskey123456";
 	
-	public static void encryptFile(String inputFilePath, String outputFilePath, Cipher cipher) {
+	public void encryptFile(String inputFilePath, String outputFilePath, Cipher cipher) {
 		FileInputStream inStream = null;
 		BufferedInputStream buffInStream = null;
 		FileOutputStream outStream = null;

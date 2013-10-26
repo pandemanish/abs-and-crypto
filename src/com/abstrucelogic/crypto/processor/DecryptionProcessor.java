@@ -11,7 +11,9 @@ import javax.crypto.CipherInputStream;
 
 public class DecryptionProcessor {
 
-	public static void decryptFile(String inputFilePath, String outputFilePath, Cipher cipher) {
+	private String key = "hoplesskey123456";
+	
+	public void decryptFile(String inputFilePath, String outputFilePath, Cipher cipher) {
 		FileInputStream inStream = null;
 		CipherInputStream cipherInStream = null;
 		BufferedInputStream bufInStream = null;

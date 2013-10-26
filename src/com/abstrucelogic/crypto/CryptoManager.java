@@ -1,10 +1,10 @@
 package com.abstrucelogic.crypto;
 
+import com.abstrucelogic.crypto.conf.CryptoConf;
+
 public class CryptoManager {
 
 	private static CryptoManager instance;
-	
-	private CryptoProgressListener mListener;	
 	
 	private CryptoManager() {
 	
@@ -17,16 +17,8 @@ public class CryptoManager {
 		return CryptoManager.instance;
 	}
 
-	public void encrypt() {	
-
+	public void process(CryptoConf conf) {
+		CryptoScheduler.getInstance().scheduleNewTask(conf);
 	}
-
-	public void decrypt() {
-			
-	}	
-
-	public void setCryptoProgressListener(CryptoProgressListener listener) {
-		this.mListener = listener;
-	}
-
+	
 }
