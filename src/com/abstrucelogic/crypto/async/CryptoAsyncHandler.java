@@ -20,7 +20,6 @@ public class CryptoAsyncHandler implements CryptoHandler {
 	
 	@Override
 	public void processStatusUpdate(CryptoProcessStatus status, int progressPer) {
-		// TODO Auto-generated method stub
 		
 	}
 	
