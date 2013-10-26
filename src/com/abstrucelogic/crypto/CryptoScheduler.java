@@ -37,6 +37,16 @@ public class CryptoScheduler {
 		}
 	}
 	
+	public void requestRemoveFromSchedulingMap(CryptoConf conf) {
+		if(this.mScheduledTasks.get(conf.getInputFilePath()) != null) {
+			//check process status
+			//remove if process stopped
+			this.mScheduledTasks.remove(conf.getInputFilePath());
+		} else {
+			android.util.Log.e("CryptoScheduler", "Error when removing task from scheduling - " + conf.getInputFilePath());
+		}
+	}
+	
 	private CryptoHandler getCryptoHandlerForConf(CryptoConf conf) {
 		CryptoHandler handler = null;
 		CryptoProcessMode cryptoProcessMode = conf.getProcessMode();

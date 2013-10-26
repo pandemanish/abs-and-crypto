@@ -5,6 +5,6 @@ public interface CryptoProgressListener {
 	public void cryptoProcessStarted();
 	public void cryptoInProgress();
 	public void cryptoProcessComplete();
-	public void cryptoProcessError();	
+	public void cryptoProcessError();
 
 } 

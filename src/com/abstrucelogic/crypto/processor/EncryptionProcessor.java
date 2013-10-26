@@ -9,9 +9,15 @@ import java.io.FileOutputStream;
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
 
-public class EncryptionProcessor {
+import com.abstrucelogic.crypto.constants.CryptoProcessStatus;
 
-	private String key = "hoplesskey123456";
+public class EncryptionProcessor {
+	
+	private CryptoProcessStatusListener mProcessListener;
+	
+	public void setProgressListener(CryptoProcessStatusListener listener) {
+		this.mProcessListener = listener;
+	}
 	
 	public void encryptFile(String inputFilePath, String outputFilePath, Cipher cipher) {
 		FileInputStream inStream = null;
@@ -37,18 +43,25 @@ public class EncryptionProcessor {
 		
 			//encryption
 			cipherOutStream = new CipherOutputStream(buffOutStream, cipher);	
-			byte[] buff = new byte[10240];	
+			byte[] buff = new byte[10240];
+			int bytesAvailable = 0;
+			int totalBytesRead = 0;
 			int numOfBytesRead = 0;
 			while(true) {
+				bytesAvailable = buffInStream.available();
 				numOfBytesRead = buffInStream.read(buff, 0, buff.length);
 				if(numOfBytesRead != -1) {
 					cipherOutStream.write(buff, 0, numOfBytesRead);
 					cipherOutStream.flush();
+					totalBytesRead = totalBytesRead + numOfBytesRead;
+					mProcessListener.processStatusUpdate(CryptoProcessStatus.INPROGRESS, (totalBytesRead/bytesAvailable) * 100);
 				} else {
+					mProcessListener.processStatusUpdate(CryptoProcessStatus.COMPLETE, 100);
 					break;
 				}
 			}
 		} catch(Exception ex) {
+			mProcessListener.processStatusUpdate(CryptoProcessStatus.ERROR, 0);
 			ex.printStackTrace();
 		} finally {
 			try {

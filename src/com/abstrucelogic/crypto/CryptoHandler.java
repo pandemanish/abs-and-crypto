@@ -1,6 +1,8 @@
 package com.abstrucelogic.crypto;
 
-public interface CryptoHandler {
+import com.abstrucelogic.crypto.processor.CryptoProcessStatusListener;
+
+public interface CryptoHandler extends CryptoProcessStatusListener {
 
 	public void exec();
 	

@@ -9,9 +9,15 @@ import java.io.FileOutputStream;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 
-public class DecryptionProcessor {
+import com.abstrucelogic.crypto.constants.CryptoProcessStatus;
 
-	private String key = "hoplesskey123456";
+public class DecryptionProcessor {
+	
+	private CryptoProcessStatusListener mProcessListener;
+	
+	public void setProgressListener(CryptoProcessStatusListener listener) {
+		this.mProcessListener = listener;
+	}
 	
 	public void decryptFile(String inputFilePath, String outputFilePath, Cipher cipher) {
 		FileInputStream inStream = null;
@@ -34,17 +40,24 @@ public class DecryptionProcessor {
 
 			//decrypt and write to file	
 			byte[] buff = new byte[10240];	
+			int bytesAvailable = 0;
+			int totalBytesRead = 0;
 			int numOfBytesRead = 0;
 			while(true) {
+				bytesAvailable = cipherInStream.available();
 				numOfBytesRead = cipherInStream.read(buff, 0, buff.length);
 				if(numOfBytesRead != -1) {
 					bufOutStream.write(buff, 0, numOfBytesRead);
 					bufOutStream.flush();
+					totalBytesRead = totalBytesRead + numOfBytesRead;
+					mProcessListener.processStatusUpdate(CryptoProcessStatus.INPROGRESS, (totalBytesRead/bytesAvailable) * 100);
 				} else {
+					mProcessListener.processStatusUpdate(CryptoProcessStatus.COMPLETE, 100);
 					break;
 				}
 			}	
 		} catch(Exception ex) {
+			mProcessListener.processStatusUpdate(CryptoProcessStatus.ERROR, 0);
 			ex.printStackTrace();
 		} finally {
 			try {
@@ -58,7 +71,7 @@ public class DecryptionProcessor {
 			}
 		}
 	}
-
+	
 	/*private static Cipher getDecCipher() {
 		Cipher cipher = null;
 		try {

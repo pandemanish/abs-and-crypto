@@ -3,8 +3,10 @@ package com.abstrucelogic.crypto.processor;
 import javax.crypto.Cipher;
 
 import com.abstrucelogic.crypto.CryptoHandler;
+import com.abstrucelogic.crypto.CryptoScheduler;
 import com.abstrucelogic.crypto.conf.CryptoConf;
 import com.abstrucelogic.crypto.constants.CryptoOperation;
+import com.abstrucelogic.crypto.constants.CryptoProcessStatus;
 
 public class CryptoSyncHandler implements CryptoHandler {
 
@@ -14,8 +16,30 @@ public class CryptoSyncHandler implements CryptoHandler {
 	
 	public CryptoSyncHandler(CryptoConf conf) {
 		this.mEncProcessor = new EncryptionProcessor();
+		this.mEncProcessor.setProgressListener(this);
 		this.mDecProcessor = new DecryptionProcessor();
+		this.mDecProcessor.setProgressListener(this);
 		this.mCurCryptoConf = conf;
+	}
+	
+	@Override
+	public void processStatusUpdate(CryptoProcessStatus status, int progressPer) {
+		switch(status) {
+			case COMPLETE :
+				this.mCurCryptoConf.getListener().cryptoProcessComplete();
+				CryptoScheduler.getInstance().requestRemoveFromSchedulingMap(this.mCurCryptoConf);
+				break;
+			case ERROR :
+				this.mCurCryptoConf.getListener().cryptoProcessError();
+				CryptoScheduler.getInstance().requestRemoveFromSchedulingMap(this.mCurCryptoConf);
+				break;
+			case INPROGRESS : 
+				this.mCurCryptoConf.getListener().cryptoInProgress();
+				break;
+			case START:
+				this.mCurCryptoConf.getListener().cryptoProcessStarted();
+				break;
+		}
 	}
 	
 	public void exec() {
