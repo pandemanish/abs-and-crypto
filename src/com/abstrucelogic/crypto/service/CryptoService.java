@@ -2,6 +2,7 @@ package com.abstrucelogic.crypto.service;
 
 import java.util.HashMap;
 
+import com.abstrucelogic.crypto.R;
 import com.abstrucelogic.crypto.conf.CryptoConf;
 import com.abstrucelogic.crypto.constants.CryptoOperation;
 import com.abstrucelogic.crypto.processor.DecryptionProcessor;
@@ -19,6 +20,7 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.text.InputFilter.LengthFilter;
 import android.widget.Toast;
 import android.os.Process;
 
@@ -39,13 +41,12 @@ public class CryptoService extends Service {
 	}
 
 	public void onCreate() {
-		Toast.makeText(this, "Service onCreate", Toast.LENGTH_SHORT).show();
 		HandlerThread encThread = new HandlerThread("EncDecThread", Process.THREAD_PRIORITY_BACKGROUND);
 		encThread.start();
 		Looper encThreadLooper = encThread.getLooper();
 		this.curServiceHandler = new ServiceHandler(encThreadLooper);
 		this.inProcessMap = new HashMap<String, CryptoConf>();
-		//this.showNotification();
+		this.showNotification();
 	}
 
 	public void updateInProcessMap(CryptoConf conf) {
@@ -60,17 +61,22 @@ public class CryptoService extends Service {
 	}
 
 	public void onDestroy() {
-		/*NotificationManager notMan = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		notMan.cancel(1);*/
+		NotificationManager notMan = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		notMan.cancel(1);
+		Toast.makeText(this, "onDestroy service", Toast.LENGTH_SHORT).show();
 	}
 
-	/*private void showNotification() {
-		Notification not = new Notification(R.drawable.padlock, "test", System.currentTimeMillis());	
-		PendingIntent pIntent = PendingIntent.getActivity(this, 1, new Intent(this, HomeActivity.class), 0);	
-		//not.setLatestEventInfo(this, "test", "test", pIntent);
+	private void showNotification() {
+		Notification.Builder mBuilder = new Notification.Builder(this);
+		mBuilder.setSmallIcon(R.drawable.loc);
+		mBuilder.setContentTitle("My notification");
+		mBuilder.setContentText("Hello World!");
+		mBuilder.setStyle(new Notification.BigTextStyle().bigText("enc service running"));
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(), 0);
+		mBuilder.setContentIntent(contentIntent);
 		NotificationManager notManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);	
-		notManager.notify(1, not);
-	}*/
+		notManager.notify(1, mBuilder.build());
+	}
 	
 	private class ServiceHandler extends Handler {
 		
