@@ -10,19 +10,19 @@ public class CryptoManager {
 	
 	}
 
-	public CryptoManager getInstance() {
+	public static CryptoManager getInstance() {
 		if(CryptoManager.instance == null) {
 			CryptoManager.instance = new CryptoManager();	
 		}
 		return CryptoManager.instance;
 	}
 
-	public void encrypt() {
-		//initiate the encrypton	
+	public void encrypt() {	
+
 	}
 
 	public void decrypt() {
-		//initizte the decryption	
+			
 	}	
 
 	public void setCryptoProgressListener(CryptoProgressListener listener) {
