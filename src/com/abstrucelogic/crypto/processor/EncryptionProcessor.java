@@ -47,8 +47,8 @@ public class EncryptionProcessor {
 			int bytesAvailable = 0;
 			int totalBytesRead = 0;
 			int numOfBytesRead = 0;
+			bytesAvailable = buffInStream.available();
 			while(true) {
-				bytesAvailable = buffInStream.available();
 				numOfBytesRead = buffInStream.read(buff, 0, buff.length);
 				if(numOfBytesRead != -1) {
 					cipherOutStream.write(buff, 0, numOfBytesRead);

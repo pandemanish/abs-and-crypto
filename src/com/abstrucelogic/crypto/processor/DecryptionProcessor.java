@@ -43,8 +43,14 @@ public class DecryptionProcessor {
 			int bytesAvailable = 0;
 			int totalBytesRead = 0;
 			int numOfBytesRead = 0;
+			
+			bytesAvailable = cipherInStream.available();
+			//TODO - review this part. Available returns 0 sometimes even when bytes are present 
+			if(bytesAvailable == 0) {
+				bytesAvailable = 1;
+			}
+			
 			while(true) {
-				bytesAvailable = cipherInStream.available();
 				numOfBytesRead = cipherInStream.read(buff, 0, buff.length);
 				if(numOfBytesRead != -1) {
 					bufOutStream.write(buff, 0, numOfBytesRead);
