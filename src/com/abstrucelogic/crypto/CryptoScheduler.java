@@ -15,7 +15,7 @@ public class CryptoScheduler {
 	private HashMap<String, CryptoHandler> mScheduledTasks;
 	
 	private CryptoScheduler() {
-		
+		this.mScheduledTasks = new HashMap<String, CryptoHandler>();
 	}
 	
 	public static CryptoScheduler getInstance() {
@@ -27,7 +27,7 @@ public class CryptoScheduler {
 	
 	public void scheduleNewTask(CryptoConf conf) {
 		//check if task being performed on same file path. If yes, abort else proceed
-		if(this.mScheduledTasks.get(conf.getInputFilePath()) != null) {
+		if(this.mScheduledTasks.get(conf.getInputFilePath()) == null) {
 			CryptoHandler handler = this.getCryptoHandlerForConf(conf);
 			mScheduledTasks.put(conf.getInputFilePath(), handler);
 			//add logic here to schedule a fixed number of tasks etc
