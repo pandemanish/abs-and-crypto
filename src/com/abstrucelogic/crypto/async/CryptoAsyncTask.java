@@ -39,7 +39,7 @@ public class CryptoAsyncTask extends AsyncTask<Void, Integer, Boolean> implement
 		return null;
 	}
 	@Override
-	public void processStatusUpdate(CryptoProcessStatus status, int progressPer) {
+	public void processStatusUpdate(CryptoProcessStatus status, float progressPer) {
 		cryptoProcessStatusListener.processStatusUpdate(status, progressPer);
 	}
 }

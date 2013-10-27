@@ -55,7 +55,7 @@ public class EncryptionProcessor {
 					cipherOutStream.flush();
 					totalBytesRead = totalBytesRead + numOfBytesRead;
 					if(mProcessListener != null) {
-						mProcessListener.processStatusUpdate(CryptoProcessStatus.INPROGRESS, (totalBytesRead/bytesAvailable) * 100);
+						mProcessListener.processStatusUpdate(CryptoProcessStatus.INPROGRESS, ((float)totalBytesRead/(float)bytesAvailable) * 100);
 					}
 				} else {
 					if(mProcessListener != null) {

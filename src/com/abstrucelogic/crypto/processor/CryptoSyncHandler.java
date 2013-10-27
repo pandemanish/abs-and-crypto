@@ -23,7 +23,7 @@ public class CryptoSyncHandler implements CryptoHandler {
 	}
 	
 	@Override
-	public void processStatusUpdate(CryptoProcessStatus status, int progressPer) {
+	public void processStatusUpdate(CryptoProcessStatus status, float progressPer) {
 		switch(status) {
 			case COMPLETE :
 				this.mCurCryptoConf.getListener().cryptoProcessComplete();

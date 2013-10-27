@@ -27,7 +27,7 @@ public class CryptoServiceHandler implements CryptoHandler {
 	}
 	
 	@Override
-	public void processStatusUpdate(CryptoProcessStatus status, int progressPer) {
+	public void processStatusUpdate(CryptoProcessStatus status, float progressPer) {
 		
 	}
 	
