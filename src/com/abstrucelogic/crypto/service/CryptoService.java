@@ -20,7 +20,6 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
-import android.text.InputFilter.LengthFilter;
 import android.widget.Toast;
 import android.os.Process;
 
@@ -69,9 +68,9 @@ public class CryptoService extends Service {
 	private void showNotification() {
 		Notification.Builder mBuilder = new Notification.Builder(this);
 		mBuilder.setSmallIcon(R.drawable.loc);
-		mBuilder.setContentTitle("My notification");
-		mBuilder.setContentText("Hello World!");
-		mBuilder.setStyle(new Notification.BigTextStyle().bigText("enc service running"));
+		mBuilder.setContentTitle("Crypto Service");
+		mBuilder.setContentText("Crypto operation in progress");
+		mBuilder.setStyle(new Notification.BigTextStyle().bigText("Please be patient!"));
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(), 0);
 		mBuilder.setContentIntent(contentIntent);
 		NotificationManager notManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);	

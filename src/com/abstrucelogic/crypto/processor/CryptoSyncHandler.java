@@ -34,7 +34,7 @@ public class CryptoSyncHandler implements CryptoHandler {
 				CryptoScheduler.getInstance().requestRemoveFromSchedulingMap(this.mCurCryptoConf);
 				break;
 			case INPROGRESS : 
-				this.mCurCryptoConf.getListener().cryptoInProgress();
+				this.mCurCryptoConf.getListener().cryptoInProgress(progressPer);
 				break;
 			case START:
 				this.mCurCryptoConf.getListener().cryptoProcessStarted();
